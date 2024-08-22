@@ -26,11 +26,13 @@ public class DriverManager {
                     WebDriverManager.edgedriver().setup();
                     driver = new EdgeDriver();
                     break;
+                    // TODO make default case
             }
         }
         return driver;
     }
 
+    // TODO remove it if u don't use it
     public static void quitDriver() {
         if (driver != null) {
             driver.quit();

@@ -69,6 +69,8 @@ public class LoginTest {
     @ParameterizedTest
     @MethodSource("DataProviderForLogin")
     public void testLoginWithCorrectInput() {
+        // TODO run this test and check logs, u testing 6 times that "standard_user" and "secret_sauce" are valid credentials
+        // TODO also u have this credentials in your DataProviderForLogin
         User correctUser = new User("standard_user", "secret_sauce");
         LoginPage loginPage = new LoginPage(getDriver());
         loginPage.enterLoginFields(correctUser);
@@ -79,7 +81,7 @@ public class LoginTest {
         assertThat(loginButtonClickResult.getShopPage().getShopPageTitle(), equalTo("Swag Labs"));
     }
 
-
+    // TODO u created great method for it in DriverManager class
     @AfterEach
     public void setDown() {
         if (getDriver() != null) {
