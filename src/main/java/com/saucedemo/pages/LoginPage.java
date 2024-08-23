@@ -2,21 +2,18 @@ package com.saucedemo.pages;
 
 import com.saucedemo.models.User;
 import com.saucedemo.tests.LoginTest;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
-import java.util.List;
 
 public class LoginPage {
     private final WebDriver driver;
     private static final Logger logger = LoggerFactory.getLogger(LoginTest.class);
+    private static final String LINK = "https://www.saucedemo.com/";
 
     @FindBy(xpath = "//input[@data-test='username']")
     private WebElement usernameArea;
@@ -28,7 +25,7 @@ public class LoginPage {
     private WebElement loginButton;
 
     @FindBy(xpath = "//*[@data-test='error']")
-    private List<WebElement> errorMassage;
+    private WebElement errorMessage;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
@@ -46,9 +43,6 @@ public class LoginPage {
 
 
     public LoginPage enterUsername(String username) {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOf(usernameArea));
-
         if(username != null) {
             usernameArea.sendKeys(username);
             logger.debug("Entered username: {}", username);
@@ -66,10 +60,7 @@ public class LoginPage {
 
 
     public LoginPage enterPassword(String password) {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOf(passwordArea));
-
-        if(password != null) {
+      if(password != null) {
             passwordArea.sendKeys(password);
             logger.debug("Entered password: {}", password);
         } else {
@@ -86,13 +77,10 @@ public class LoginPage {
 
 
     public LoginButtonClickResult clickLoginButton() {
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        wait.until(ExpectedConditions.visibilityOf(loginButton));
-
         loginButton.click();
         logger.info("Clicked login button");
 
-        if(driver.getCurrentUrl().equals("https://www.saucedemo.com/")) {
+        if(driver.getCurrentUrl().equals(LINK)) {
             return new LoginButtonClickResult(this);
         } else {
             return new LoginButtonClickResult(new ShopPage(driver));
@@ -101,13 +89,12 @@ public class LoginPage {
 
 
     public String getErrorMassageText() {
-        if(!errorMassage.isEmpty()) {
-            String fullText = errorMassage.get(0).getText();
+        try {
+            String fullText = errorMessage.getText();
             return fullText.substring(14);
-        } else {
+        } catch (TimeoutException e) {
             return "";
         }
     }
-
 
 }
