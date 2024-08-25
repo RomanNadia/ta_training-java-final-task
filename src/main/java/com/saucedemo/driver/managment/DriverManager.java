@@ -14,10 +14,6 @@ public class DriverManager {
     public static WebDriver getDriver(Browser browser) {
         if (driver == null) {
             switch (browser) {
-                case CHROME:
-                    WebDriverManager.chromedriver().setup();
-                    driver = new ChromeDriver();
-                    break;
                 case FIREBOX:
                     WebDriverManager.firefoxdriver().setup();
                     driver = new FirefoxDriver();
@@ -26,17 +22,14 @@ public class DriverManager {
                     WebDriverManager.edgedriver().setup();
                     driver = new EdgeDriver();
                     break;
-                    // TODO make default case
+                case CHROME:
+                default:
+                    WebDriverManager.chromedriver().setup();
+                    driver = new ChromeDriver();
+                    break;
             }
         }
         return driver;
     }
 
-    // TODO remove it if u don't use it
-    public static void quitDriver() {
-        if (driver != null) {
-            driver.quit();
-            driver = null;
-        }
-    }
 }
